@@ -147,8 +147,6 @@ section button:hover {
     vertical-align: middle;
 }
 
-
-
 .articulo-ficha {
     display: flex;
     align-items: flex-start;
@@ -199,4 +197,28 @@ section button:hover {
     margin-bottom: 0.3em;
     color: #555;
     font-size: 0.98em;
+}
+
+.mensaje-exito {
+    color: #1b8a3a;
+    background: #e6f9ed;
+    border: 2px solid #1b8a3a;
+    border-radius: 6px;
+    text-align: center;
+    margin: 1em auto;
+    padding: 1em;
+    width: 80%;
+    font-weight: bold;
+}
+
+.mensaje-error {
+    color: #c0392b;
+    background: #fdeaea;
+    border: 2px solid #c0392b;
+    border-radius: 6px;
+    text-align: center;
+    margin: 1em auto;
+    padding: 1em;
+    width: 80%;
+    font-weight: bold;
 }

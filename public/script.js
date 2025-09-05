@@ -23,6 +23,8 @@ document.getElementById('formCrear').onsubmit = async function(e) {
     });
     let json = await res.json();
 
+    const resultado = document.getElementById('crearResultado');
+
     // Si hay imagen, subirla
     if (json.articulo && formData.get('imgUrl') && formData.get('imgUrl').name) {
         const imgForm = new FormData();
@@ -33,12 +35,16 @@ document.getElementById('formCrear').onsubmit = async function(e) {
         });
         const imgJson = await res.json();
         if (imgJson.status === "success") {
-            document.getElementById('crearResultado').innerText = "Artículo creado y imagen subida correctamente.";
+            resultado.innerHTML = `<div class="mensaje-exito">Artículo creado y imagen subida correctamente.</div>`;
         } else {
-            document.getElementById('crearResultado').innerText = "Artículo creado, pero hubo un problema al subir la imagen.";
+            resultado.innerHTML = `<div class="mensaje-error">Artículo creado, pero hubo un problema al subir la imagen.</div>`;
         }
     } else {
-        document.getElementById('crearResultado').innerText = json.mensaje || JSON.stringify(json);
+        if (json.status === "success") {
+            resultado.innerHTML = `<div class="mensaje-exito">${json.mensaje || "Artículo creado correctamente."}</div>`;
+        } else {
+            resultado.innerHTML = `<div class="mensaje-error">${json.mensaje || "Error al crear el artículo."}</div>`;
+        }
     }
     form.reset();
 };
@@ -63,6 +69,8 @@ document.getElementById('formActualizar').onsubmit = async function(e) {
     });
     let json = await res.json();
 
+    const resultado = document.getElementById('actualizarResultado');
+
     // Si hay imagen, subirla
     if (json.articulo && formData.get('imgUrl') && formData.get('imgUrl').name) {
         const imgForm = new FormData();
@@ -73,12 +81,16 @@ document.getElementById('formActualizar').onsubmit = async function(e) {
         });
         const imgJson = await res.json();
         if (imgJson.status === "success") {
-            document.getElementById('actualizarResultado').innerText = "Artículo actualizado y nueva imagen subida correctamente.";
+            resultado.innerHTML = `<div class="mensaje-exito">Artículo actualizado y nueva imagen subida correctamente.</div>`;
         } else {
-            document.getElementById('actualizarResultado').innerText = "Artículo actualizado, pero hubo un problema al subir la imagen.";
+            resultado.innerHTML = `<div class="mensaje-error">Artículo actualizado, pero hubo un problema al subir la imagen.</div>`;
         }
     } else {
-        document.getElementById('actualizarResultado').innerText = json.mensaje || JSON.stringify(json);
+        if (json.status === "success") {
+            resultado.innerHTML = `<div class="mensaje-exito">${json.mensaje || "Artículo actualizado correctamente."}</div>`;
+        } else {
+            resultado.innerHTML = `<div class="mensaje-error">${json.mensaje || "Error al actualizar el artículo."}</div>`;
+        }
     }
     form.reset();
 };
@@ -89,11 +101,16 @@ document.getElementById('formEliminar').onsubmit = async function(e) {
     const id = new FormData(this).get('id');
     const res = await fetch(`/api/borrar/${id}`, { method: 'DELETE' });
     const json = await res.json();
-    document.getElementById('eliminarResultado').innerText = json.mensaje || JSON.stringify(json);
+    const resultado = document.getElementById('eliminarResultado');
+    if (json.status === "Success" || json.status === "success") {
+        resultado.innerHTML = `<div class="mensaje-exito">${json.mensaje || "Artículo eliminado correctamente."}</div>`;
+    } else {
+        resultado.innerHTML = `<div class="mensaje-error">${json.mensaje || "Error al eliminar el artículo."}</div>`;
+    }
     this.reset();
 };
 
-// Listar artículos con fichas técnicas
+// Listar artículos con fichas técnicas y mostrar imagen correctamente
 async function cargarArticulos() {
     const res = await fetch('/api/listar');
     const json = await res.json();
@@ -101,10 +118,16 @@ async function cargarArticulos() {
     contenedor.innerHTML = '';
     if (json.consulta && Array.isArray(json.consulta)) {
         json.consulta.forEach(a => {
+            // Construir la ruta de la imagen
+            let imgSrc = 'https://via.placeholder.com/120';
+            if (a.imgUrl && a.imgUrl !== 'default.png') {
+                // Mostrar la ruta real para depuración
+                imgSrc = `/imagenes/articulos/${a.imgUrl}`;
+            }
             contenedor.innerHTML += `
                 <div class="articulo-ficha">
                     <div class="articulo-imagen">
-                        <img src="${a.imgUrl && a.imgUrl !== 'default.png' ? a.imgUrl : 'https://via.placeholder.com/120'}" alt="Imagen del artículo" />
+                        <img src="${imgSrc}" alt="Imagen del artículo" onerror="this.onerror=null;this.src='https://via.placeholder.com/120';" />
                     </div>
                     <div class="articulo-info">
                         <h3>${a.titulo}</h3>
@@ -113,6 +136,7 @@ async function cargarArticulos() {
                             <li><b>Fecha:</b> ${a.fecha ? new Date(a.fecha).toLocaleDateString() : 'Sin fecha'}</li>
                             <li><b>ID:</b> ${a._id}</li>
                         </ul>
+                        <small style="color:#888;">Ruta imagen: ${imgSrc}</small>
                     </div>
                 </div>
             `;

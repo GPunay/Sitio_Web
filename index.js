@@ -16,6 +16,7 @@ app.use(cors());
 //Convertir body a objeto js
 app.use(express.json());
 app.use(express.static("public"));
+app.use('/imagenes/articulos', express.static('imagenes/articulos'));
 
 
 //Crear rutas

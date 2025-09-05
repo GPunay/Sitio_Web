@@ -1,7 +1,7 @@
 const fs = require("fs");
 //const { validarArticulo } = require("../helpers/validar")
 const Articulo = require("../modelos/articulo");
-const articulo = require("../modelos/articulo");
+
 const { validarArticulo } = require("../helpers/validar");
 
 const prueba = (req, res) => {
@@ -138,9 +138,6 @@ const borrar = async (req, res) => {
         });
     }
 }
-
-
-
 const editar = async (req, res) => {
     try {
         // Recoger id del artículo a editar
@@ -187,59 +184,58 @@ const editar = async (req, res) => {
     }
 };
 
-
 const subir = async (req, res) => {
     try {
-        // Configurar multer
-
-        // Recoger el fichero de imagen subido
-        if (!req.file && !req.files) {
-            return res.status(404).json({
-                status: "error",
-                mensaje: "Petición invalida"
-            });
-        }
-
-        // Nombre del archivo
-        let archivo = req.file.originalname;
-
-        // Extensión del archivo
-        let archivo_split = archivo.split(".");
-        let archivo_extension = archivo_split[1];
-
-        // Comprobar extensión correcta
-        if (archivo_extension !== "png" && archivo_extension !== "jpg" &&
-            archivo_extension !== "jpeg" && archivo_extension !== "gif") {
-            // Borrar archivo y dar respuesta
-            await new Promise((resolve, reject) => {
-                fs.unlink(req.file.path, (error) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve();
-                    }
-                });
-            });
+        // Verificar si se recibió un archivo
+        if (!req.file) {
             return res.status(400).json({
                 status: "error",
-                mensaje: "Imagen inválida"
-            });
-        } else {
-            return res.status(200).json({
-                status: "success",
-                archivo_split,
-                files: req.file
+                mensaje: "No se ha enviado ninguna imagen"
             });
         }
+
+        // Validar extensión del archivo
+        const archivo_split = req.file.originalname.split(".");
+        const archivo_extension = archivo_split[archivo_split.length - 1].toLowerCase();
+        if (!["png", "jpg", "jpeg", "gif"].includes(archivo_extension)) {
+            // Eliminar archivo no válido
+            fs.unlinkSync(req.file.path);
+            return res.status(400).json({
+                status: "error",
+                mensaje: "Extensión de imagen no válida (solo png, jpg, jpeg, gif)"
+            });
+        }
+
+        // Actualizar el artículo con el nombre de la imagen subida
+        const articuloId = req.params.id;
+        const articuloActualizado = await Articulo.findOneAndUpdate(
+            { _id: articuloId },
+            { imgUrl: req.file.filename },
+            { new: true }
+        );
+
+        if (!articuloActualizado) {
+            // Si no existe el artículo, eliminar la imagen subida
+            fs.unlinkSync(req.file.path);
+            return res.status(404).json({
+                status: "error",
+                mensaje: "No se encontró el artículo para actualizar la imagen"
+            });
+        }
+
+        return res.status(200).json({
+            status: "success",
+            mensaje: "Imagen subida y artículo actualizado correctamente",
+            articulo: articuloActualizado,
+            archivo: req.file
+        });
     } catch (error) {
         return res.status(500).json({
             status: "error",
-            mensaje: "Error en el servidor"
+            mensaje: "Error en el servidor al subir la imagen"
         });
     }
 };
-
-
 
 module.exports = {
     prueba,
