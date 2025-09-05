@@ -1,134 +1,70 @@
+function mostrarSeccion(seccion) {
+    document.querySelectorAll('.seccion').forEach(sec => sec.style.display = 'none');
+    document.getElementById(seccion).style.display = 'block';
+}
 
-document.addEventListener("DOMContentLoaded", () => {
-    const articlesContainer = document.getElementById("articles-container");
-    const articleForm = document.getElementById("article-form");
-
-    // Cargar y mostrar artículos
-    const fetchArticles = async () => {
-        try {
-            const response = await fetch("/api/articulos");
-            if (!response.ok) {
-                throw new Error("Error al cargar los artículos");
-            }
-            const articles = await response.json();
-
-            articlesContainer.innerHTML = ""; // Limpiar artículos existentes
-            articles.datos.forEach((article) => {
-                const articleElement = document.createElement("div");
-                articleElement.classList.add("article");
-                articleElement.innerHTML = `
-                    <h3>${article.titulo}</h3>
-                    <p>${article.contenido}</p>
-                    <div class="article-actions">
-                        <button class="edit-btn" data-id="${article._id}">Editar</button>
-                        <button class="delete-btn" data-id="${article._id}">Eliminar</button>
-                    </div>
-                `;
-                articlesContainer.appendChild(articleElement);
-            });
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    };
-
-    // Crear un nuevo artículo
-    articleForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const titulo = document.getElementById("titulo").value;
-        const contenido = document.getElementById("contenido").value;
-
-        try {
-            const response = await fetch("/api/crear", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ titulo, contenido }),
-            });
-
-            if (!response.ok) {
-                throw new Error("Error al crear el artículo");
-            }
-
-            await response.json();
-            fetchArticles(); // Recargar la lista de artículos
-            articleForm.reset();
-        } catch (error) {
-            console.error("Error:", error);
-        }
+// Crear artículo
+document.getElementById('formCrear').onsubmit = async function(e) {
+    e.preventDefault();
+    const datos = Object.fromEntries(new FormData(this));
+    const res = await fetch('/api/crear', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(datos)
     });
+    const json = await res.json();
+    document.getElementById('crearResultado').innerText = json.mensaje || JSON.stringify(json);
+    this.reset();
+};
 
-    // Manejar clics en los botones de eliminar y editar
-    articlesContainer.addEventListener("click", async (e) => {
-        if (e.target.classList.contains("delete-btn")) {
-            const articleId = e.target.dataset.id;
-            try {
-                const response = await fetch(`/api/articulo/${articleId}`, {
-                    method: "DELETE",
-                });
+// Actualizar artículo
+document.getElementById('formActualizar').onsubmit = async function(e) {
+    e.preventDefault();
+    const datos = Object.fromEntries(new FormData(this));
+    const id = datos.id;
+    delete datos.id;
+    const res = await fetch(`/api/actualizar/${id}`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(datos)
+    });
+    const json = await res.json();
+    document.getElementById('actualizarResultado').innerText = json.mensaje || JSON.stringify(json);
+    this.reset();
+};
 
-                if (!response.ok) {
-                    throw new Error("Error al eliminar el artículo");
-                }
+// Eliminar artículo
+document.getElementById('formEliminar').onsubmit = async function(e) {
+    e.preventDefault();
+    const id = new FormData(this).get('id');
+    const res = await fetch(`/api/borrar/${id}`, { method: 'DELETE' });
+    const json = await res.json();
+    document.getElementById('eliminarResultado').innerText = json.mensaje || JSON.stringify(json);
+    this.reset();
+};
 
-                fetchArticles(); // Recargar la lista de artículos
-            } catch (error) {
-                console.error("Error:", error);
-            }
-        }
-
-        if (e.target.classList.contains("edit-btn")) {
-            const articleId = e.target.dataset.id;
-            const articleElement = e.target.closest(".article");
-            const titulo = articleElement.querySelector("h3").textContent;
-            const contenido = articleElement.querySelector("p").textContent;
-
-            articleElement.innerHTML = `
-                <form class="edit-form" data-id="${articleId}">
-                    <input type="text" value="${titulo}" required>
-                    <textarea required>${contenido}</textarea>
-                    <button type="submit">Guardar</button>
-                    <button type="button" class="cancel-btn">Cancelar</button>
-                </form>
+// Listar artículos
+async function cargarArticulos() {
+    const res = await fetch('/api/listar');
+    const json = await res.json();
+    const contenedor = document.getElementById('listaArticulos');
+    contenedor.innerHTML = '';
+    if (json.consulta && Array.isArray(json.consulta)) {
+        json.consulta.forEach(a => {
+            contenedor.innerHTML += `
+                <div class="articulo">
+                    <h3>${a.titulo}</h3>
+                    <p>${a.contenido}</p>
+                    <small>Fecha: ${new Date(a.fecha).toLocaleDateString()}</small><br>
+                    <img src="${a.imgUrl || 'default.png'}" alt="Imagen" />
+                    <br><b>ID:</b> ${a._id}
+                </div>
             `;
-        }
-    });
+        });
+    } else {
+        contenedor.innerText = 'No hay artículos para mostrar.';
+    }
+}
 
-    // Manejar el envío de formularios de edición
-    articlesContainer.addEventListener("submit", async (e) => {
-        if (e.target.classList.contains("edit-form")) {
-            e.preventDefault();
-            const articleId = e.target.dataset.id;
-            const titulo = e.target.querySelector("input").value;
-            const contenido = e.target.querySelector("textarea").value;
-
-            try {
-                const response = await fetch(`/api/articulo/${articleId}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ titulo, contenido }),
-                });
-
-                if (!response.ok) {
-                    throw new Error("Error al actualizar el artículo");
-                }
-
-                fetchArticles(); // Recargar la lista de artículos
-            } catch (error) {
-                console.error("Error:", error);
-            }
-        }
-    });
-
-    // Manejar clics en el botón de cancelar
-    articlesContainer.addEventListener("click", (e) => {
-        if (e.target.classList.contains("cancel-btn")) {
-            fetchArticles(); // Simplemente recargar los artículos para cancelar la edición
-        }
-    });
-
-    fetchArticles();
-});
+// Mostrar la sección de crear por defecto
+mostrarSeccion('crear');

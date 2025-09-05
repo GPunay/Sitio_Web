@@ -1,80 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Story+Script&display=swap');
+
 body {
-    font-family: sans-serif;
-    margin: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 0;
 }
 
-header {
+#titulo {
+    font-family: 'Story Script', Helvetica, sans-serif, Arial, sans-serif;
     text-align: center;
-    margin-bottom: 20px;
+    font-weight: bold;
+    color: #2d3e50;
+    font-size: 3.5em;
+    margin: 1em 10em;
+    transition: all 0.3s;
+}
+
+#titulo:hover {
+    font-size: 4em;
+    border-bottom: #2d3e50 solid 4px;
+}
+
+nav {
+    background: #2d3e50;
+    padding: 2em 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 7em;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+nav ul li a:hover {
+    border: 3px solid #3c6795;
+    border-radius: 10px;
+    padding: 1em 1em;
+    background: #427ab6;
+    box-shadow: 4px 4px 2px #3c6795;
 }
 
 main {
-    display: flex;
-    justify-content: space-between;
+    max-width: 700px;
+    margin: 2em auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 2em;
 }
 
-#articles-container {
-    width: 60%;
-}
-
-#add-article-form {
-    width: 35%;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
+h2 {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2d3e50;
 }
 
 label {
-    margin-top: 10px;
+    color: #2d3e50;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5em;
 }
 
-input, textarea {
-    padding: 5px;
-    margin-top: 5px;
+form input, form textarea {
+    display: block;
+    width: 95%;
+    margin-bottom: 1em;
+    padding: 0.7em;
+    border: 2px solid #c6c6c6;
+    border-radius: 5px;
 }
 
-button {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
+form button {
+    display: flex;
+    margin: 1.3em auto;
+    background: #364a5f;
+    color: #fff;
     border: none;
+    padding: 0.7em 2em;
+    border-radius: 4px;
     cursor: pointer;
+    font-size: 1em;
+    transition: all 0.3s;
 }
 
-button:hover {
-    background-color: #45a049;
+form button:hover {
+    border: 3px solid #2d3e50;
+    box-shadow: 3px 3px 2px #2d3e50;
 }
 
-.article {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
+section button {
+    display: flex;
+    margin: 1.3em auto;
+    background: #364a5f;
+    color: #fff;
+    border: none;
+    padding: 0.7em 2em;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: all 0.3s;
 }
 
-.article h3 {
-    margin-top: 0;
+section button:hover {
+    border: 3px solid #2d3e50;
+    box-shadow: 3px 3px 2px #2d3e50;
 }
 
-.article-actions {
-    margin-top: 10px;
+.seccion {
+    margin-bottom: 2em;
 }
 
-.article-actions button {
-    margin-right: 5px;
-    background-color: #f44336;
+#listaArticulos {
+    margin-top: 1em;
 }
 
-.article-actions button:hover {
-    background-color: #da190b;
+.articulo {
+    border-bottom: 2px solid #d3d3d3;
+    padding: 1em 0;
 }
 
-.article-actions .edit-btn {
-    background-color: #008CBA;
-}
-
-.article-actions .edit-btn:hover {
-    background-color: #007ba7;
+.articulo img {
+    max-width: 120px;
+    border-radius: 6px;
+    margin-right: 1em;
+    vertical-align: middle;
 }
