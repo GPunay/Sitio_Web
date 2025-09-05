@@ -83,6 +83,10 @@ form input, form textarea {
     border-radius: 5px;
 }
 
+form button i {
+    margin-right: 0.5em;
+}
+
 form button {
     display: flex;
     margin: 1.3em auto;
@@ -114,6 +118,10 @@ section button {
     transition: all 0.3s;
 }
 
+section button i {
+    margin-right: 0.5em;
+}
+
 section button:hover {
     border: 3px solid #2d3e50;
     box-shadow: 3px 3px 2px #2d3e50;
@@ -137,4 +145,58 @@ section button:hover {
     border-radius: 6px;
     margin-right: 1em;
     vertical-align: middle;
+}
+
+
+
+.articulo-ficha {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5em;
+    background: #f9fafb;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+    margin-bottom: 2em;
+    padding: 1.5em;
+    transition: box-shadow 0.2s;
+}
+
+.articulo-ficha:hover {
+    box-shadow: 0 4px 16px rgba(44, 62, 80, 0.15);
+}
+
+.articulo-imagen img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #c6c6c6;
+    background: #fff;
+}
+
+.articulo-info {
+    flex: 1;
+}
+
+.articulo-info h3 {
+    margin: 0 0 0.5em 0;
+    color: #2d3e50;
+    font-size: 1.3em;
+}
+
+.articulo-info p {
+    margin: 0 0 1em 0;
+    color: #364a5f;
+}
+
+.articulo-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.articulo-info ul li {
+    margin-bottom: 0.3em;
+    color: #555;
+    font-size: 0.98em;
 }

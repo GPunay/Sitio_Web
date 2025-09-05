@@ -4,14 +4,32 @@
     <meta charset="UTF-8">
     <title>Blog UMG</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <nav>
         <ul>
-            <li><a href="#" onclick="mostrarSeccion('crear')">Crear</a></li>
-            <li><a href="#" onclick="mostrarSeccion('actualizar')">Actualizar</a></li>
-            <li><a href="#" onclick="mostrarSeccion('eliminar')">Eliminar</a></li>
-            <li><a href="#" onclick="mostrarSeccion('listar')">Listar</a></li>
+            <li>
+                <a href="#" onclick="mostrarSeccion('crear')">
+                    <i class="fa-solid fa-plus"></i> Crear
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="mostrarSeccion('actualizar')">
+                    <i class="fa-solid fa-pen-to-square"></i> Actualizar
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="mostrarSeccion('eliminar')">
+                    <i class="fa-solid fa-trash"></i> Eliminar
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="mostrarSeccion('listar')">
+                    <i class="fa-solid fa-list"></i> Listar
+                </a>
+            </li>
         </ul>
     </nav>
     <h1 id="titulo">Mi Blog</h1>
@@ -19,16 +37,16 @@
         <!-- Sección Crear -->
         <section id="crear" class="seccion">
             <h2>Crear Artículo</h2>
-            <form id="formCrear">
+            <form id="formCrear" enctype="multipart/form-data">
                 <label for="titulo">Título del artículo</label>
                 <input type="text" name="titulo" placeholder="Título" required minlength="5"><br>
                 <label for="contenido">Contenido del artículo</label>
-                <textarea name="contenido" plaxceholder="Contenido" required></textarea><br>
+                <textarea name="contenido" placeholder="Contenido" required></textarea><br>
                 <label for="fecha">Fecha de Publicación del artículo</label>
                 <input type="date" name="fecha"><br>
                 <label for="imgUrl">Subir imagen del artículo</label>
-                <input type="text" name="imgUrl" placeholder="URL de imagen"><br>
-                <button type="submit">Crear</button>
+                <input type="file" name="imgUrl" accept="image/*"><br>
+                <button type="submit"><i class="fa-solid fa-plus"></i> Crear</button>
             </form>
             <div id="crearResultado"></div>
         </section>
@@ -36,7 +54,7 @@
         <!-- Sección Actualizar -->
         <section id="actualizar" class="seccion" style="display:none;">
             <h2>Actualizar Artículo</h2>
-            <form id="formActualizar">
+            <form id="formActualizar" enctype="multipart/form-data">
                 <label for="id">ID del artículo a Actualizar</label>
                 <input type="text" name="id" placeholder="ID del artículo" required><br>
                 <label for="titulo">Título del artículo</label>
@@ -46,8 +64,8 @@
                 <label for="fecha">Fecha de Publicación del artículo</label>
                 <input type="date" name="fecha"><br>
                 <label for="imgUrl">Subir imagen del artículo</label>
-                <input type="text" name="imgUrl" placeholder="Nueva URL de imagen"><br>
-                <button type="submit">Actualizar</button>
+                <input type="file" name="imgUrl" accept="image/*"><br>
+                <button type="submit"><i class="fa-solid fa-pen-to-square"></i> Actualizar</button>
             </form>
             <div id="actualizarResultado"></div>
         </section>
@@ -58,7 +76,7 @@
             <form id="formEliminar">
                 <label for="id">ID del artículo a Eliminar</label>
                 <input type="text" name="id" placeholder="ID del artículo" required><br>
-                <button type="submit">Eliminar</button>
+                <button type="submit"><i class="fa-solid fa-trash"></i> Eliminar</button>
             </form>
             <div id="eliminarResultado"></div>
         </section>
@@ -66,7 +84,7 @@
         <!-- Sección Listar -->
         <section id="listar" class="seccion" style="display:none;">
             <h2>Listar Artículo</h2>
-            <button onclick="cargarArticulos()">Mostrar Artículos</button>
+            <button onclick="cargarArticulos()"><i class="fa-solid fa-list"></i> Mostrar Artículos</button>
             <div id="listaArticulos"></div>
         </section>
     </main>
