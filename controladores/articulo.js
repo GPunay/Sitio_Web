@@ -1,6 +1,7 @@
 const fs = require("fs");
 //const { validarArticulo } = require("../helpers/validar")
 const Articulo = require("../modelos/articulo");
+
 const { validarArticulo } = require("../helpers/validar");
 
 const prueba = (req, res) => {
