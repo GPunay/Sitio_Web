@@ -1,0 +1,80 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+}
+
+#articles-container {
+    width: 60%;
+}
+
+#add-article-form {
+    width: 35%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+}
+
+input, textarea {
+    padding: 5px;
+    margin-top: 5px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.article {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.article h3 {
+    margin-top: 0;
+}
+
+.article-actions {
+    margin-top: 10px;
+}
+
+.article-actions button {
+    margin-right: 5px;
+    background-color: #f44336;
+}
+
+.article-actions button:hover {
+    background-color: #da190b;
+}
+
+.article-actions .edit-btn {
+    background-color: #008CBA;
+}
+
+.article-actions .edit-btn:hover {
+    background-color: #007ba7;
+}

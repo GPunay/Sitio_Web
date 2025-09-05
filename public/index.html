@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Blog</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Mi Blog</h1>
+    </header>
+
+    <main>
+        <section id="articles-container">
+            <!-- Los artículos se cargarán aquí -->
+        </section>
+
+        <section id="add-article-form">
+            <h2>Añadir Nuevo Artículo</h2>
+            <form id="article-form">
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" required>
+
+                <label for="contenido">Contenido:</label>
+                <textarea id="contenido" name="contenido" required></textarea>
+
+                <button type="submit">Guardar Artículo</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
